@@ -14,7 +14,7 @@ v=1;
 switch nargin
     case 3
         for i=TX_SEQ
-            if ~ismember(i,RX_SEQ1) || ~ismember(i,RX_SEQ2)
+            if ~ismember(i,RX_SEQ1) && ~ismember(i,RX_SEQ2)
                 PER = PER+1;
                 vPER(v)=1;
             else 
