@@ -150,50 +150,47 @@ timestamp_1524(4,:) = timestamp_test_6_2(TT_1L_1524, TT_2L_1524, TT_2L_1524, DD1
 [DA_1524b, TT_2_1524b]=calcDA(TX_SEQ_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), TT_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), RX_SEQ_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)), TT_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)));
 
 %% plot and save
+% Concatanate data age according packet size
+DA_124 = [DA_124a DA_124b];
+DA_524 = [DA_524a DA_524b];
+DA_1524 = [DA_1524a DA_1524b];
+
+timeA=TT_2_124a-TT_2_124a(1);
+TT_124=[TT_2_124a-TT_2_124a(1) (TT_2_124b-TT_2_124b(1))+timeA(end)];
+
+timeA=TT_2_524a-TT_2_524a(1);
+TT_524=[TT_2_524a-TT_2_524a(1) (TT_2_524b-TT_2_524b(1))+timeA(end)];
+
+timeA=TT_2_1524a-TT_2_1524a(1);
+TT_1524=[TT_2_1524a-TT_2_1524a(1) (TT_2_1524b-TT_2_1524b(1))+timeA(end)];
+
+timeB=max([TT_124 TT_524 TT_1524]);
 h=figure;
 hold on
 set(h, 'PaperPosition', [2 1 40 20]);
 
-%Cut away "empty" time
-timeA=TT_2_1524a-TT_2_1524a(1);
-timeB=(TT_2_1524b-TT_2_1524b(1))+timeA(end);
-stairs(timeA, DA_1524a,'k');
-stairs(timeB, DA_1524b,'k');
-
-timeA=TT_2_524a-TT_2_524a(1);
-timeB=(TT_2_524b-TT_2_524b(1))+timeA(end);
-stairs(timeA, DA_524a);
-stairs(timeB, DA_524b);
-
-timeA=TT_2_124a-TT_2_124a(1);
-timeB=(TT_2_124b-TT_2_124b(1))+timeA(end);
-stairs(timeA, DA_124a,'r');
-stairs(timeB, DA_124b,'r');
+stairs(TT_1524, DA_1524, 'k');
+stairs(TT_524, DA_524, 'r');
+stairs(TT_124, DA_124);
 
 
-%% Concatanate data age in packet size
-DA_124 = [DA_124a DA_124b];
-DA_524 = [DA_524a DA_524b];
-DA_1524 = [DA_1524a DA_1524b];
-% 
-% 
-% maxDA=max([DA_124 DA_524 DA_1524]);
-% axis([-10 max(TT_1L_524)+10 0 maxDA+0.2])
-% xlabel('Elapsed Time [s]');
-% ylabel('Data Age [s]')
-% title({['Test',num2str(t_no),' AP', num2str(APnum), ', Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
-% legend('124 byte','524 byte', '1524 byte')
-% 
-% %Save the figure
-% cd('output')
-% s=hgexport('readstyle','RelCommH_dataage');
-% s.format='png';
-% s.Height='auto';
-% s.Width='16';
-% hgexport(gcf, ['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L],s)
-% savefig(['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L]);
-% cd('..')
-% close all
+maxDA=max([DA_124 DA_524 DA_1524]);
+axis([-10 max(timeB)+10 0 maxDA+0.2])
+xlabel('Elapsed Time [s]');
+ylabel('Data Age [s]')
+title({['Test',num2str(t_no),' AP', num2str(APnum), ', Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
+legend( '1508 byte','508 byte','108 byte');
+
+%Save the figure
+cd('output')
+s=hgexport('readstyle','RelCommH_dataage');
+s.format='png';
+s.Height='auto';
+s.Width='16';
+hgexport(gcf, ['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L],s)
+savefig(['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L]);
+cd('..')
+close all
 %% Create pie diagrams for data age
 bound1=0.05;
 bound2=0.15;
@@ -209,7 +206,7 @@ bound5_124=length(DA_124(DA_124>bound4));
 
 figure(1);
 pie([bound1_124 bound2_124 bound3_124 bound4_124 bound5_124])
-title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 124 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
+title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 108 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 cd('output')
@@ -225,7 +222,7 @@ bound4_524=length(DA_524(DA_524>bound3 & DA_524<=bound4));
 bound5_524=length(DA_524(DA_524>bound4));
 figure(2);
 pie([bound1_524 bound2_524 bound3_524 bound4_524 bound5_524])
-title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 524 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
+title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 508 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 cd('output')
@@ -240,7 +237,7 @@ bound4_1524=length(DA_1524(DA_1524>bound3 & DA_1524<=bound4));
 bound5_1524=length(DA_1524(DA_1524>bound4));
 figure(3);
 pie([bound1_1524 bound2_1524 bound3_1524 bound4_1524 bound5_1524])
-title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 1524 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
+title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 1508 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 %Save the figure
 cd('output')
