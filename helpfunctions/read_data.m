@@ -6,14 +6,14 @@ N=max(size(DATA));
 tt=1;
 
 for t=1:N
-    if DATA(t).postime > t1 && DATA(t).postime < t2
+    if DATA(t).frametime_epoch > t1 && DATA(t).frametime_epoch < t2
     fname2=DATA(t).friendlyname;
     %'DEF84L'
         if fname2 == fname
             flength2=DATA(t).framelength;
             if flength2 == flength; % 108 124 524 600
 
-                time=DATA(t).postime;
+                time=DATA(t).frametime_epoch;
                 TT(tt)=time-t1;
                 RSSI(tt)=DATA(t).rssi;
                 LAT(tt)=DATA(t).latitude;

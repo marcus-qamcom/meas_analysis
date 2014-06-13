@@ -39,10 +39,14 @@ clear TT_L RSSI_L LAT_L LONG_L RX_SEQ_L
 %% Analysis starts here
 % read data: RSSI, T LAT LONG (i.e. lat long of moving truck)     
 disp('load links')
-[TT_1L RSSI_1L LAT_1L LONG_1L RX_SEQ_PltonL]=load_comm_link(testconf,t_no,'1','PltonL','DRF18L',fs);
-[TT_1L RSSI_1L LAT_1L LONG_1L RX_SEQ_DEF84L]=load_comm_link(testconf,t_no,'1','DEF84L','DRF18L',fs);
-[TT_1L RSSI_1L LAT_1L LONG_1L RX_SEQ_PlutoL]=load_comm_link(testconf,t_no,'1','PlutoL','DRF18L',fs);
-[TT_1L RSSI_1L LAT_1L LONG_1L RX_SEQ_PlutoR]=load_comm_link(testconf,t_no,'1','PlutoR','DRF18L',fs);
+% [TT_2L RSSI_1L LAT_1L LONG_1L RX_SEQ_PltonL]=load_comm_link(testconf,t_no,'1','PltonL','DRF18L',fs);
+% [TT_1L RSSI_DEF84L LAT_1L LONG_1L RX_SEQ_DEF84L]=load_comm_link(testconf,t_no,'1','DEF84L','DRF18L',fs);
+[TT_4L RSSI_PlutoL LAT_1L LONG_1L RX_SEQ_PlutoL]=load_comm_link(testconf,t_no,'1','PlutoL','DRF18L',fs);
+% [TT_1L RSSI_PlutoR LAT_1L LONG_1L RX_SEQ_PlutoR]=load_comm_link(testconf,t_no,'1','PlutoR','DRF18L',fs);
+[TT_2L RSSI_PltonL LAT_1L LONG_1L RX_SEQ_PltonL]=load_comm_link(testconf,t_no,'1','PltonL','DRF18L',fs);
+% [TT_1L RSSI_PltonR LAT_1L LONG_1L RX_SEQ_PltonR]=load_comm_link(testconf,t_no,'1','PltonR','DRF18L',fs);
+[TT_3L RSSI_DEF84L LAT_1L LONG_1L RX_SEQ_DEF84L]=load_comm_link(testconf,t_no,'1','DEF84L','DRF18L',fs);
+% [TT_1L RSSI_DEF84R LAT_1L LONG_1L RX_SEQ_DEF84R]=load_comm_link(testconf,t_no,'1','DEF84R','DRF18L',fs);
 % TX frames smaller than RX frames
 fs=108;
 [TT_1L RSSI_1L LAT_1L LONG_1L TX_SEQ_DRF18L]=load_comm_link(testconf,t_no,'1','DRF18L','DRF18L',fs);
@@ -52,7 +56,9 @@ fs=108;
 % 
 % PSR_DRF18L_to_DEF84L = calcPSR(TX_SEQ_DRF18L,RX_SEQ_DEF84L);
 %%
-PER_DRF18L_to_PlutoL = calcPER_div(TX_SEQ_DRF18L,RX_SEQ_PlutoL, RX_SEQ_PlutoR);
+% [PER, vPER] = calcPER(TX_SEQ_DRF18L,RX_SEQ_PlutoR);
+% [RSSI] = getRSSI(TX_SEQ_DRF18L, RX_SEQ_PlutoL, RX_SEQ_PlutoR, RSSI_PlutoL,RSSI_PlutoR);
+[NIR] = calcNIR(TX_SEQ_DRF18L,RX_SEQ_PlutoL,RX_SEQ_PltonL,RX_SEQ_DEF84L);
 
 % PER_DRF18L_to_PltonL = (1-PSR_DRF18L_to_PltonL)*100
 % PER_DRF18L_to_PlutoL = (1-PSR_DRF18L_to_PlutoL)*100

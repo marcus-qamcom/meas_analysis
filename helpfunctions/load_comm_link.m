@@ -97,6 +97,32 @@ if isequal(testcase_no,'2') && isequal(AP,'8_30m')
     no=18;
 end
 
+% Test 6
+if isequal(testcase_no,'6') && isequal(AP,'1')
+    no=28;
+end
+if isequal(testcase_no,'6') && isequal(AP,'2')
+    no=29;
+end
+if isequal(testcase_no,'6') && isequal(AP,'4')
+    no=30;
+end
+if isequal(testcase_no,'6') && isequal(AP,'5')
+    no=31;
+end
+if isequal(testcase_no,'6') && isequal(AP,'8')
+    no=32;
+end
+if isequal(testcase_no,'6') && isequal(AP,'7')
+    no=33;
+end
+if isequal(testcase_no,'6') && isequal(AP,'6')
+    no=34;
+end
+if isequal(testcase_no,'6') && isequal(AP,'1')
+    no=28;
+end
+
 % start
 disp(['Start:' testconf(no).starttime ' , Stop: ' testconf(no).stoptime])
 
@@ -104,8 +130,11 @@ t1=timeHuman2timeUnix(testconf(no).starttime);
 % stop
 t2=timeHuman2timeUnix(testconf(no).stoptime);
 
-
-my_path=['../data/Day1/' veh '/Test' num2str(testcase_no) 'AP' num2str(AP) veh '.mat']
+if ismember(testcase_no, ['1','1b','2'])
+    my_path=['../data/Day1/' veh '/Test' num2str(testcase_no) 'AP' num2str(AP) veh '.mat']
+else
+    my_path=['../data/Day2/' veh '/Test' num2str(testcase_no) 'AP' num2str(AP) veh '.mat'] 
+end
 data_m = load(my_path);
 
 my_cmd=['Test' num2str(testcase_no) 'AP' num2str(AP) veh];
