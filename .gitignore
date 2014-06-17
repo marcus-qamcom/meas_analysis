@@ -1,2 +1,4 @@
 *.asv
+*.fig
+*.png
 output/
