@@ -1,4 +1,4 @@
-function dataAgeEvaluation(t_no, APnum, dist, RXVeh2L, RXVeh2R, TXVehL, testconf)
+function dataAgeEvaluation(t_no, APnum, dist, testconf, TXVehL, RXVeh2L, RXVeh2R)
 
 %% Below used for development of the script %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % clear all 
@@ -19,7 +19,10 @@ function dataAgeEvaluation(t_no, APnum, dist, RXVeh2L, RXVeh2R, TXVehL, testconf
 % RXVeh2R='PltonR';
 % TXVehL='DRF18L';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+enableRight=0;
+if nargin==7
+    enableRight=1;
+end
 
 if dist=='0'
    AP=APnum; 
@@ -38,7 +41,9 @@ fs=124;
 % Left antennas
 [TT_2L_124 RSSI_2L_124 LAT_2L_124 LONG_2L_124 RX_SEQ_2L_124]=load_comm_link(testconf,t_no,AP,RXVeh2L,TXVehL,fs);
 % Right antennas
-[TT_2R_124 RSSI_2R_124 LAT_2R_124 LONG_2R_124 RX_SEQ_2R_124]=load_comm_link(testconf,t_no,AP,RXVeh2R,TXVehL,fs);
+if enableRight
+    [TT_2R_124 RSSI_2R_124 LAT_2R_124 LONG_2R_124 RX_SEQ_2R_124]=load_comm_link(testconf,t_no,AP,RXVeh2R,TXVehL,fs);
+end
 %send logg
 fsTX=108;
 [TT_1L_124 RSSI_1L_124 LAT_1L_124 LONG_1L_124 TX_SEQ_1L_124]=load_comm_link(testconf,t_no,AP,TXVehL,TXVehL,fsTX);
@@ -49,7 +54,9 @@ fs=524;
 % Left antennas
 [TT_2L_524 RSSI_2L_524 LAT_2L_524 LONG_2L_524 RX_SEQ_2L_524]=load_comm_link(testconf,t_no,AP,RXVeh2L,TXVehL,fs);
 % Right antennas
-[TT_2R_524 RSSI_2R_524 LAT_2R_524 LONG_2R_524 RX_SEQ_2R_524]=load_comm_link(testconf,t_no,AP,RXVeh2R,TXVehL,fs);
+if enableRight
+    [TT_2R_524 RSSI_2R_524 LAT_2R_524 LONG_2R_524 RX_SEQ_2R_524]=load_comm_link(testconf,t_no,AP,RXVeh2R,TXVehL,fs);
+end
 %send logg
 fsTX=508;
 [TT_1L_524 RSSI_1L_524 LAT_1L_524 LONG_1L_524 TX_SEQ_1L_524]=load_comm_link(testconf,t_no,AP,TXVehL,TXVehL,fsTX);
@@ -59,7 +66,9 @@ fs=600;
 % Left antennas
 [TT_2L_1524 RSSI_2L_1524 LAT_2L_1524 LONG_2L_1524 RX_SEQ_2L_1524]=load_comm_link(testconf,t_no,AP,RXVeh2L,TXVehL,fs);
 % Right antennas
-[TT_2R_1524 RSSI_2R_1524 LAT_2R_1524 LONG_2R_1524 RX_SEQ_2R_1524]=load_comm_link(testconf,t_no,AP,RXVeh2R,TXVehL,fs);
+if enableRight
+    [TT_2R_1524 RSSI_2R_1524 LAT_2R_1524 LONG_2R_1524 RX_SEQ_2R_1524]=load_comm_link(testconf,t_no,AP,RXVeh2R,TXVehL,fs);
+end
 %send logg
 fsTX=600;
 [TT_1L_1524 RSSI_1L_1524 LAT_1L_1524 LONG_1L_1524 TX_SEQ_1L_1524]=load_comm_link(testconf,t_no,AP,TXVehL,TXVehL,fsTX);
@@ -140,7 +149,6 @@ timestamp_1524(3,:) = timestamp_test_6_2(TT_1L_1524, TT_2L_1524, TT_2L_1524, DD2
 % % 4) first reaches E4 exit end of straight road
 timestamp_1524(4,:) = timestamp_test_6_2(TT_1L_1524, TT_2L_1524, TT_2L_1524, DD1_1524, 800, 1, 1);
 
-
 %% Calculate Data age for 124 byte packets
 [DA_124a, TT_2_124a]=calcDA(TX_SEQ_1L_124(timestamp_124(1,1):timestamp_124(2,1)), TT_1L_124(timestamp_124(1,1):timestamp_124(2,1)), RX_SEQ_2L_124(timestamp_124(1,3):timestamp_124(2,3)), TT_2L_124(timestamp_124(1,3):timestamp_124(2,3)));
 [DA_124b, TT_2_124b]=calcDA(TX_SEQ_1L_124(timestamp_124(3,1):timestamp_124(4,1)), TT_1L_124(timestamp_124(3,1):timestamp_124(4,1)), RX_SEQ_2L_124(timestamp_124(3,3):timestamp_124(4,3)), TT_2L_124(timestamp_124(3,3):timestamp_124(4,3)));
@@ -152,6 +160,11 @@ timestamp_1524(4,:) = timestamp_test_6_2(TT_1L_1524, TT_2L_1524, TT_2L_1524, DD1
 %% Calculate Data age for 1524 byte packets
 [DA_1524a, TT_2_1524a]=calcDA(TX_SEQ_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)), TT_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)), RX_SEQ_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)), TT_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)));
 [DA_1524b, TT_2_1524b]=calcDA(TX_SEQ_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), TT_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), RX_SEQ_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)), TT_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)));
+
+%% Calculate PER for 124 byte packets
+[PER_124 vPER_124]=calcPER([TX_SEQ_1L_124(timestamp_124(1,1):timestamp_124(2,1)) TX_SEQ_1L_124(timestamp_124(3,1):timestamp_124(4,1))],[RX_SEQ_2L_124(timestamp_124(1,3):timestamp_124(2,3)) RX_SEQ_2L_124(timestamp_124(3,3):timestamp_124(4,3))]);
+[PER_524 vPER_524]=calcPER([TX_SEQ_1L_524(timestamp_124(1,1):timestamp_524(2,1)) TX_SEQ_1L_524(timestamp_524(3,1):timestamp_524(4,1))],[RX_SEQ_2L_524(timestamp_524(1,3):timestamp_524(2,3)) RX_SEQ_2L_524(timestamp_524(3,3):timestamp_524(4,3))]);
+[PER_1524 vPER_1524]=calcPER([TX_SEQ_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)) TX_SEQ_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1))],[RX_SEQ_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)) RX_SEQ_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3))]);
 
 %% plot and save
 % Concatanate data age according packet size
@@ -168,14 +181,20 @@ TT_524=[TT_2_524a-TT_2_524a(1) (TT_2_524b-TT_2_524b(1))+timeA(end)];
 timeA=TT_2_1524a-TT_2_1524a(1);
 TT_1524=[TT_2_1524a-TT_2_1524a(1) (TT_2_1524b-TT_2_1524b(1))+timeA(end)];
 
+%%Save params
+cd('output')
+save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '100byte'], 'DA_124', 'TT_124', 'PER_124', 'vPER_124');
+save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '500byte'], 'DA_524', 'TT_524', 'PER_524', 'vPER_524');
+save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '1500byte'], 'DA_1524', 'TT_1524', 'PER_1524', 'vPER_1524');
+cd('..')
 timeB=max([TT_124 TT_524 TT_1524]);
 h=figure;
 hold on
 set(h, 'PaperPosition', [2 1 40 20]);
 
-stairs(TT_1524, DA_1524, 'k');
-stairs(TT_524, DA_524, 'r');
-stairs(TT_124, DA_124);
+plot(TT_1524, DA_1524, 'k');
+plot(TT_524, DA_524, 'r');
+plot(TT_124, DA_124);
 
 
 maxDA=max([DA_124 DA_524 DA_1524]);
@@ -183,7 +202,7 @@ axis([-10 max(timeB)+10 0 maxDA+0.2])
 xlabel('Elapsed Time [s]');
 ylabel('Data Age [s]')
 title({['Test',num2str(t_no),' AP', num2str(APnum), ', Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
-legend( '1508 byte','508 byte','108 byte');
+legend( '1500 byte','500 byte','100 byte');
 
 %Save the figure
 cd('output')
@@ -193,6 +212,36 @@ s.Height='auto';
 s.Width='16';
 hgexport(gcf, ['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L],s)
 savefig(['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L]);
+cd('..')
+close all
+
+
+%% Create CDF plot for DAta age
+h=figure;
+hold on
+set(h, 'PaperPosition', [2 1 40 20]);
+
+
+a=cdfplot(DA_1524);
+set(a,'color','r')
+b=cdfplot(DA_524);
+set(b,'color','k')
+cdfplot(DA_124);
+
+
+xlabel('Data age [s]');
+ylabel('CDF [-]')
+title({['Test',num2str(t_no),' AP', num2str(APnum), ', Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
+legend( '1500 byte','500 byte','100 byte');
+
+%Save the figure
+cd('output')
+s=hgexport('readstyle','RelCommH_dataage');
+s.format='png';
+s.Height='auto';
+s.Width='16';
+hgexport(gcf, ['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L],s)
+savefig(['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, ' CDF.']);
 cd('..')
 close all
 %% Create pie diagrams for data age
@@ -210,7 +259,7 @@ bound5_124=length(DA_124(DA_124>bound4));
 
 figure(1);
 pie([bound1_124 bound2_124 bound3_124 bound4_124 bound5_124])
-title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 108 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
+title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 100 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 cd('output')
@@ -226,7 +275,7 @@ bound4_524=length(DA_524(DA_524>bound3 & DA_524<=bound4));
 bound5_524=length(DA_524(DA_524>bound4));
 figure(2);
 pie([bound1_524 bound2_524 bound3_524 bound4_524 bound5_524])
-title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 508 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
+title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 500 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 cd('output')
@@ -241,7 +290,7 @@ bound4_1524=length(DA_1524(DA_1524>bound3 & DA_1524<=bound4));
 bound5_1524=length(DA_1524(DA_1524>bound4));
 figure(3);
 pie([bound1_1524 bound2_1524 bound3_1524 bound4_1524 bound5_1524])
-title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 1508 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
+title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 1500 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 %Save the figure
 cd('output')
