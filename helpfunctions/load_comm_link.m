@@ -119,11 +119,26 @@ end
 if isequal(testcase_no,'6') && isequal(AP,'6')
     no=34;
 end
-if isequal(testcase_no,'6') && isequal(AP,'1')
-    no=28;
+
+% Test 6 Diversity
+if isequal(testcase_no,'6') && isequal(AP,'AP4_Diversity')
+    no=35;
+end
+if isequal(testcase_no,'6') && isequal(AP,'AP9_Diversity')
+    no=36;
+end
+if isequal(testcase_no,'6') && isequal(AP,'AP3_Diversity')
+    no=37;
+end
+if isequal(testcase_no,'6') && isequal(AP,'AP8_Diversity')
+    no=38;
+end
+if isequal(testcase_no,'6') && isequal(AP,'AP5_Diversity')
+    no=39;
 end
 
 % start
+keyboard
 disp(['Start:' testconf(no).starttime ' , Stop: ' testconf(no).stoptime])
 
 t1=timeHuman2timeUnix(testconf(no).starttime);
