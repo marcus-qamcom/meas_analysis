@@ -120,6 +120,7 @@ ylabel('Distance [m]')
 xlabel('Distance [m]')
 axis equal
 hold off
+close all
 
 % Get rest of the timestamps
 %% Get time stamps for packet size 524 byte
@@ -162,9 +163,9 @@ timestamp_1524(4,:) = timestamp_test_6_2(TT_1L_1524, TT_2L_1524, TT_2L_1524, DD1
 [DA_1524b, TT_2_1524b]=calcDA(TX_SEQ_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), TT_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), RX_SEQ_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)), TT_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)));
 
 %% Calculate PER for 124 byte packets
-[PER_124 vPER_124]=calcPER([TX_SEQ_1L_124(timestamp_124(1,1):timestamp_124(2,1)) TX_SEQ_1L_124(timestamp_124(3,1):timestamp_124(4,1))],[RX_SEQ_2L_124(timestamp_124(1,3):timestamp_124(2,3)) RX_SEQ_2L_124(timestamp_124(3,3):timestamp_124(4,3))]);
-[PER_524 vPER_524]=calcPER([TX_SEQ_1L_524(timestamp_124(1,1):timestamp_524(2,1)) TX_SEQ_1L_524(timestamp_524(3,1):timestamp_524(4,1))],[RX_SEQ_2L_524(timestamp_524(1,3):timestamp_524(2,3)) RX_SEQ_2L_524(timestamp_524(3,3):timestamp_524(4,3))]);
-[PER_1524 vPER_1524]=calcPER([TX_SEQ_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)) TX_SEQ_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1))],[RX_SEQ_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)) RX_SEQ_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3))]);
+[PER_124, vPER_124]=calcPER([TX_SEQ_1L_124(timestamp_124(1,1):timestamp_124(2,1)) TX_SEQ_1L_124(timestamp_124(3,1):timestamp_124(4,1))],[RX_SEQ_2L_124(timestamp_124(1,3):timestamp_124(2,3)) RX_SEQ_2L_124(timestamp_124(3,3):timestamp_124(4,3))]);
+[PER_524, vPER_524]=calcPER([TX_SEQ_1L_524(timestamp_124(1,1):timestamp_524(2,1)) TX_SEQ_1L_524(timestamp_524(3,1):timestamp_524(4,1))],[RX_SEQ_2L_524(timestamp_524(1,3):timestamp_524(2,3)) RX_SEQ_2L_524(timestamp_524(3,3):timestamp_524(4,3))]);
+[PER_1524, vPER_1524]=calcPER([TX_SEQ_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)) TX_SEQ_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1))],[RX_SEQ_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)) RX_SEQ_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3))]);
 
 %% plot and save
 % Concatanate data age according packet size
@@ -187,40 +188,76 @@ save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ',
 save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '500byte'], 'DA_524', 'TT_524', 'PER_524', 'vPER_524');
 save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '1500byte'], 'DA_1524', 'TT_1524', 'PER_1524', 'vPER_1524');
 cd('..')
-timeB=max([TT_124 TT_524 TT_1524]);
-h=figure;
+
+%%Plot and save data age for 100 byte packets
+timeB=max(TT_124);
+hold off
+h = figure(1);
+set(h, 'Units','centimeters','Position', [14 10 14 10]);
 hold on
-set(h, 'PaperPosition', [2 1 40 20]);
 
-plot(TT_1524, DA_1524, 'k');
-plot(TT_524, DA_524, 'r');
-plot(TT_124, DA_124);
+plot(TT_124, DA_124, 'k');
 
-
-maxDA=max([DA_124 DA_524 DA_1524]);
+maxDA=max(DA_124);
 axis([-10 max(timeB)+10 0 maxDA+0.2])
 xlabel('Elapsed Time [s]');
 ylabel('Data Age [s]')
-title({['Test',num2str(t_no),' AP', num2str(APnum), ', Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
-legend( '1500 byte','500 byte','100 byte');
+title({['Test',num2str(t_no),' AP', num2str(APnum), ', Inter vehicle distance: ~21m, 100 byte packets ']; [TXVehL, ' to ', RXVeh2L]})
+legend('100 byte');
 
 %Save the figure
 cd('output')
-s=hgexport('readstyle','RelCommH_dataage');
-s.format='png';
-s.Height='auto';
-s.Width='16';
-hgexport(gcf, ['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L],s)
-savefig(['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L]);
+savefig(['4_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_100byte']);
 cd('..')
 close all
 
+%%Plot and save data age for 500 byte packets
+timeB=max(TT_524);
+hold off
+h = figure(1);
+set(h, 'Units','centimeters','Position', [14 10 14 10]);
+hold on
+plot(TT_524, DA_524, 'k');
+
+
+maxDA=max(DA_524);
+axis([-10 max(timeB)+10 0 maxDA+0.2])
+xlabel('Elapsed Time [s]');
+ylabel('Data Age [s]')
+title({['Test',num2str(t_no),' AP', num2str(APnum), ', Inter vehicle distance: ~21m, 500 byte packets ']; [TXVehL, ' to ', RXVeh2L]})
+legend('500 byte');
+
+%Save the figure
+cd('output')
+savefig(['4_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_500byte']);
+cd('..')
+close all
+%%Plot and save data age for 1500 byte packets
+timeB=max(TT_1524);
+hold off
+h = figure(1);
+set(h, 'Units','centimeters','Position', [14 10 14 10]);
+hold on
+plot(TT_1524, DA_1524, 'k');
+
+
+maxDA=max(DA_1524);
+axis([-10 max(timeB)+10 0 maxDA+0.2])
+xlabel('Elapsed Time [s]');
+ylabel('Data Age [s]')
+title({['Test',num2str(t_no),' AP', num2str(APnum), ', Inter vehicle distance: ~21m, 1500 byte packets ']; [TXVehL, ' to ', RXVeh2L]})
+legend('1500 byte');
+
+%Save the figure
+cd('output')
+savefig(['4_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_1500byte']);
+cd('..')
+close all
 
 %% Create CDF plot for DAta age
-h=figure;
+h = figure(1);
+set(h, 'Units','centimeters','Position', [14 10 14 10]);
 hold on
-set(h, 'PaperPosition', [2 1 40 20]);
-
 
 a=cdfplot(DA_1524);
 set(a,'color','r')
@@ -236,17 +273,12 @@ legend( '1500 byte','500 byte','100 byte');
 
 %Save the figure
 cd('output')
-s=hgexport('readstyle','RelCommH_dataage');
-s.format='png';
-s.Height='auto';
-s.Width='16';
-hgexport(gcf, ['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L],s)
 savefig(['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, ' CDF.']);
 cd('..')
 close all
 %% Create pie diagrams for data age
-bound1=0.05;
-bound2=0.15;
+bound1=0.15;
+bound2=0.25;
 bound3=0.5;
 bound4=1;
 
@@ -257,13 +289,14 @@ bound3_124=length(DA_124(DA_124>bound2 & DA_124<=bound3));
 bound4_124=length(DA_124(DA_124>bound3 & DA_124<=bound4));
 bound5_124=length(DA_124(DA_124>bound4));
 
-figure(1);
+h=figure(1);
+set(h, 'Units','centimeters','Position', [14 10 14 10]);
 pie([bound1_124 bound2_124 bound3_124 bound4_124 bound5_124])
 title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 100 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 cd('output')
-savefig(1,['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_pie_124_byte']);
+savefig(1,['3_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_pie_100_byte']);
 cd('..')
 close all
 
@@ -273,13 +306,14 @@ bound2_524=length(DA_524(DA_524>bound1));
 bound3_524=length(DA_524(DA_524>bound2 & DA_524<=bound3));
 bound4_524=length(DA_524(DA_524>bound3 & DA_524<=bound4));
 bound5_524=length(DA_524(DA_524>bound4));
-figure(2);
+h=figure(2);
+set(h, 'Units','centimeters','Position', [14 10 14 10]);
 pie([bound1_524 bound2_524 bound3_524 bound4_524 bound5_524])
 title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 500 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 cd('output')
-savefig(2,['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_pie_524_byte']);
+savefig(2,['2_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_pie_500_byte']);
 cd('..')
 close all
 % Get values for 1524byte packet size
@@ -288,12 +322,13 @@ bound2_1524=length(DA_1524(DA_1524>bound1));
 bound3_1524=length(DA_1524(DA_1524>bound2 & DA_1524<=bound3));
 bound4_1524=length(DA_1524(DA_1524>bound3 & DA_1524<=bound4));
 bound5_1524=length(DA_1524(DA_1524>bound4));
-figure(3);
+h=figure(3);
+set(h, 'Units','centimeters','Position', [14 10 14 10]);
 pie([bound1_1524 bound2_1524 bound3_1524 bound4_1524 bound5_1524])
 title({['Test',num2str(t_no),' AP', num2str(APnum) ' packet size: 1500 byte. Inter vehicle distance: ~21m, ']; [TXVehL, ' to ', RXVeh2L]})
 legend(['0-' num2str(bound1) 's'],[num2str(bound1) '-' num2str(bound2) 's'],[num2str(bound2) 's-' num2str(bound3) 's'],[num2str(bound3) 's-' num2str(bound4) 's'],[num2str(bound4) 's- ...'],'Location', 'NorthEastOutside')
 %Save the figure
 cd('output')
-savefig(3,['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_pie_1524_byte']);
+savefig(3,['1_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_pie_1500_byte']);
 cd('..')
 close all
