@@ -151,16 +151,27 @@ timestamp_1524(3,:) = timestamp_test_6_2(TT_1L_1524, TT_2L_1524, TT_2L_1524, DD2
 timestamp_1524(4,:) = timestamp_test_6_2(TT_1L_1524, TT_2L_1524, TT_2L_1524, DD1_1524, 800, 1, 1);
 
 %% Calculate Data age for 124 byte packets
-[DA_124a, TT_2_124a]=calcDA(TX_SEQ_1L_124(timestamp_124(1,1):timestamp_124(2,1)), TT_1L_124(timestamp_124(1,1):timestamp_124(2,1)), RX_SEQ_2L_124(timestamp_124(1,3):timestamp_124(2,3)), TT_2L_124(timestamp_124(1,3):timestamp_124(2,3)));
-[DA_124b, TT_2_124b]=calcDA(TX_SEQ_1L_124(timestamp_124(3,1):timestamp_124(4,1)), TT_1L_124(timestamp_124(3,1):timestamp_124(4,1)), RX_SEQ_2L_124(timestamp_124(3,3):timestamp_124(4,3)), TT_2L_124(timestamp_124(3,3):timestamp_124(4,3)));
+[DA_124a, TT_2_124a, TT_TX_100a]=calcDA(TX_SEQ_1L_124(timestamp_124(1,1):timestamp_124(2,1)), TT_1L_124(timestamp_124(1,1):timestamp_124(2,1)), RX_SEQ_2L_124(timestamp_124(1,3):timestamp_124(2,3)), TT_2L_124(timestamp_124(1,3):timestamp_124(2,3)),1);
+[DA_124b, TT_2_124b, TT_TX_100b]=calcDA(TX_SEQ_1L_124(timestamp_124(3,1):timestamp_124(4,1)), TT_1L_124(timestamp_124(3,1):timestamp_124(4,1)), RX_SEQ_2L_124(timestamp_124(3,3):timestamp_124(4,3)), TT_2L_124(timestamp_124(3,3):timestamp_124(4,3)),1);
+DA_124 = [DA_124a DA_124b];
+tmptime=TT_TX_100a-TT_TX_100a(1);
+TT_TX_100=[TT_TX_100a-TT_TX_100a(1) TT_TX_100b-TT_TX_100b(1)+tmptime(end)];
+
 
 %% Calculate Data age for 524 byte packets
-[DA_524a, TT_2_524a]=calcDA(TX_SEQ_1L_524(timestamp_524(1,1):timestamp_524(2,1)), TT_1L_524(timestamp_524(1,1):timestamp_524(2,1)), RX_SEQ_2L_524(timestamp_524(1,3):timestamp_524(2,3)), TT_2L_524(timestamp_524(1,3):timestamp_524(2,3)));
-[DA_524b, TT_2_524b]=calcDA(TX_SEQ_1L_524(timestamp_524(3,1):timestamp_524(4,1)), TT_1L_524(timestamp_524(3,1):timestamp_524(4,1)), RX_SEQ_2L_524(timestamp_524(3,3):timestamp_524(4,3)), TT_2L_524(timestamp_524(3,3):timestamp_524(4,3)));
+[DA_524a, TT_2_524a, TT_TX_500a]=calcDA(TX_SEQ_1L_524(timestamp_524(1,1):timestamp_524(2,1)), TT_1L_524(timestamp_524(1,1):timestamp_524(2,1)), RX_SEQ_2L_524(timestamp_524(1,3):timestamp_524(2,3)), TT_2L_524(timestamp_524(1,3):timestamp_524(2,3)),1);
+[DA_524b, TT_2_524b, TT_TX_500b]=calcDA(TX_SEQ_1L_524(timestamp_524(3,1):timestamp_524(4,1)), TT_1L_524(timestamp_524(3,1):timestamp_524(4,1)), RX_SEQ_2L_524(timestamp_524(3,3):timestamp_524(4,3)), TT_2L_524(timestamp_524(3,3):timestamp_524(4,3)),1);
+DA_524 = [DA_524a DA_524b];
+tmptime=TT_TX_500a-TT_TX_500a(1);
+TT_TX_500=[TT_TX_500a-TT_TX_500a(1) TT_TX_500b-TT_TX_500b(1)+tmptime(end)];
+
 
 %% Calculate Data age for 1524 byte packets
-[DA_1524a, TT_2_1524a]=calcDA(TX_SEQ_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)), TT_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)), RX_SEQ_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)), TT_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)));
-[DA_1524b, TT_2_1524b]=calcDA(TX_SEQ_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), TT_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), RX_SEQ_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)), TT_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)));
+[DA_1524a, TT_2_1524a, TT_TX_1500a]=calcDA(TX_SEQ_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)), TT_1L_1524(timestamp_1524(1,1):timestamp_1524(2,1)), RX_SEQ_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)), TT_2L_1524(timestamp_1524(1,3):timestamp_1524(2,3)),1);
+[DA_1524b, TT_2_1524b, TT_TX_1500b]=calcDA(TX_SEQ_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), TT_1L_1524(timestamp_1524(3,1):timestamp_1524(4,1)), RX_SEQ_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)), TT_2L_1524(timestamp_1524(3,3):timestamp_1524(4,3)),1);
+DA_1524 = [DA_1524a DA_1524b];
+tmptime=TT_TX_1500a-TT_TX_1500a(1);
+TT_TX_1500=[TT_TX_1500a-TT_TX_1500a(1) TT_TX_1500b-TT_TX_1500b(1)+tmptime(end)];
 
 %% Calculate PER for 124 byte packets
 [PER_124, vPER_124]=calcPER([TX_SEQ_1L_124(timestamp_124(1,1):timestamp_124(2,1)) TX_SEQ_1L_124(timestamp_124(3,1):timestamp_124(4,1))],[RX_SEQ_2L_124(timestamp_124(1,3):timestamp_124(2,3)) RX_SEQ_2L_124(timestamp_124(3,3):timestamp_124(4,3))]);
@@ -169,34 +180,32 @@ timestamp_1524(4,:) = timestamp_test_6_2(TT_1L_1524, TT_2L_1524, TT_2L_1524, DD1
 
 %% plot and save
 % Concatanate data age according packet size
-DA_124 = [DA_124a DA_124b];
-DA_524 = [DA_524a DA_524b];
-DA_1524 = [DA_1524a DA_1524b];
+% Use these time vectors when not filling data age with 0.1...
 
 timeA=TT_2_124a-TT_2_124a(1);
-TT_124=[TT_2_124a-TT_2_124a(1) (TT_2_124b-TT_2_124b(1))+timeA(end)];
+TT_124=[TT_2_124a-TT_2_124a(1) TT_2_124b-TT_2_124b(1)+timeA(end-1)];
 
 timeA=TT_2_524a-TT_2_524a(1);
-TT_524=[TT_2_524a-TT_2_524a(1) (TT_2_524b-TT_2_524b(1))+timeA(end)];
+TT_524=[TT_2_524a-TT_2_524a(1) (TT_2_524b-TT_2_524b(1))+timeA(end-1)];
 
 timeA=TT_2_1524a-TT_2_1524a(1);
-TT_1524=[TT_2_1524a-TT_2_1524a(1) (TT_2_1524b-TT_2_1524b(1))+timeA(end)];
+TT_1524=[TT_2_1524a-TT_2_1524a(1) (TT_2_1524b-TT_2_1524b(1))+timeA(end-1)];
 
-%%Save params
+%% Save params
 cd('output')
 save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '100byte'], 'DA_124', 'TT_124', 'PER_124', 'vPER_124');
 save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '500byte'], 'DA_524', 'TT_524', 'PER_524', 'vPER_524');
 save(['Params_for_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '1500byte'], 'DA_1524', 'TT_1524', 'PER_1524', 'vPER_1524');
 cd('..')
 
-%%Plot and save data age for 100 byte packets
-timeB=max(TT_124);
+%% Plot and save data age for 100 byte packets
+timeB=max(TT_TX_100);
 hold off
 h = figure(1);
 set(h, 'Units','centimeters','Position', [14 10 14 10]);
 hold on
 
-plot(TT_124, DA_124, 'k');
+plot(TT_TX_100(1:length(DA_124)), DA_124, 'k');
 
 maxDA=max(DA_124);
 axis([-10 max(timeB)+10 0 maxDA+0.2])
@@ -211,13 +220,13 @@ savefig(['4_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh
 cd('..')
 close all
 
-%%Plot and save data age for 500 byte packets
-timeB=max(TT_524);
+%% Plot and save data age for 500 byte packets
+timeB=max(TT_TX_500);
 hold off
 h = figure(1);
 set(h, 'Units','centimeters','Position', [14 10 14 10]);
 hold on
-plot(TT_524, DA_524, 'k');
+plot(TT_TX_500(1:length(DA_524)), DA_524, 'k');
 
 
 maxDA=max(DA_524);
@@ -232,13 +241,13 @@ cd('output')
 savefig(['4_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_500byte']);
 cd('..')
 close all
-%%Plot and save data age for 1500 byte packets
-timeB=max(TT_1524);
+%% Plot and save data age for 1500 byte packets
+timeB=max(TT_TX_1500);
 hold off
 h = figure(1);
 set(h, 'Units','centimeters','Position', [14 10 14 10]);
 hold on
-plot(TT_1524, DA_1524, 'k');
+plot(TT_TX_1500(1:length(DA_1524)), DA_1524, 'k');
 
 
 maxDA=max(DA_1524);
@@ -273,7 +282,7 @@ legend( '1500 byte','500 byte','100 byte');
 
 %Save the figure
 cd('output')
-savefig(['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, ' CDF.']);
+savefig(['Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, ' CDF']);
 cd('..')
 close all
 %% Create pie diagrams for data age
@@ -332,3 +341,4 @@ cd('output')
 savefig(3,['1_Test', num2str(t_no), '_AP', num2str(AP), ' ', TXVehL, ' to ', RXVeh2L, '_pie_1500_byte']);
 cd('..')
 close all
+end
