@@ -1,4 +1,4 @@
-function [TT RSSI LAT LONG RX_SEQ] = read_data(t1, t2, DATA, fname, flength)
+function [TT RSSI LAT LONG RX_SEQ V] = read_data(t1, t2, DATA, fname, flength)
 % 
  
 
@@ -19,6 +19,7 @@ for t=1:N
                 LAT(tt)=DATA(t).latitude;
                 LONG(tt)=DATA(t).longitude;
                 RX_SEQ(tt)=DATA(t).seqno;
+                V(tt)=DATA(t).speed;
                 tt=tt+1;
             end
         end
@@ -29,7 +30,9 @@ if tt==1
     disp(['Not found: ' fname ' ' num2str(flength) ])
     TT(1)=0;
     RSSI(1)=-90;
+    V(1)=0;
     LAT(1)=DATA(1).latitude;
     LONG(1)=DATA(1).longitude;
     RX_SEQ(1)=DATA(1).seqno;
+    
 end

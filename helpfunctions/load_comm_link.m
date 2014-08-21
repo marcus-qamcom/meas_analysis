@@ -1,4 +1,4 @@
-function [T RSSI LAT LONG RX_SEQ lab] = load_comm_link(testconf,testcase_no,AP,veh,friendlyname,frame_size,meeting) 
+function [T, RSSI, LAT, LONG, RX_SEQ, lab, V] = load_comm_link(testconf,testcase_no,AP,veh,friendlyname,frame_size,meeting) 
 % Load Test 1, AP1
 
 % run testconftestcase before this script
@@ -156,7 +156,7 @@ my_cmd=['Test' num2str(testcase_no) 'AP' num2str(AP) veh];
 data = data_m.(my_cmd);
 clear data_m
 
-[T RSSI LAT LONG RX_SEQ] = read_data(t1, t2, data, friendlyname, frame_size);
+[T RSSI LAT LONG RX_SEQ V] = read_data(t1, t2, data, friendlyname, frame_size);
 
 clear data
 
